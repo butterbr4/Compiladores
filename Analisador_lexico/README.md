@@ -1,7 +1,6 @@
-### 1. **Como rodar o programa**
+## **O Analisador Léxico**
 
-
-### 2. **Gramática da linguagem PL/0**
+### 1. **Gramática da linguagem PL/0**
 ```
 <programa> ::= <bloco> .
 <bloco> ::= <declaracao> <comando>
@@ -33,3 +32,41 @@ Além disso:
 * comentários são de única linha, entre chaves { }
 * identificadores são formados por letras e dígitos, começando por letra
 * só há números inteiros, formados por um ou mais dígitos (entre 0 e 9)
+
+### 2. **Definição de Tokens**
+Baseado-se na gramática, os tokens podem incluir:
+
+- **Palavras-reservadas**: `CONST`, `VAR`, `PROCEDURE`, `CALL`, `BEGIN`, `END`, `IF`, `THEN`, `WHILE`, `DO`, `ODD`
+- **Identificadores**: Sequência de letras e dígitos, começando por letra.
+- **Números inteiros**: Sequência de um ou mais dígitos.
+- **Operadores**: `:=`, `;`, `+`, `-`, `*`, `/`, `=`, `<>`, `<`, `<=`, `>`, `>=`
+- **Delimitadores**: `(`, `)`, `,`
+- **Comentários**: `{` até `}` (ignorar o conteúdo)
+
+### 3. **Automato para as palavras-reservadas**
+![Nao encotrou a imagem palavra.png](imagens/palavra.png)
+### 3. **Automato para os números inteiros**
+![Nao encotrou a imagem numero.png](imagens/numero.png)
+### 3. **Automato para os operadores**
+![Nao encotrou a imagem operador.png](imagens/operador.png)
+### 3. **Automato para os delimitadores**
+![Nao encotrou a imagem delimitador.png](imagens/delimitador.png)
+### 3. **Automato para os comentários**
+![Nao encotrou a imagem comentario.png](imagens/comentario.png)
+### 3. **Automato final**
+![Nao encotrou a imagem final.png](imagens/final.png)
+
+## Rodando e Compilando o programa
+### 1. **Requisitos de sistema**
+Sistema utilizado --> Linux Ubuntu 22.04
+                                                                                    
+### 2. **Como rodar o programa**
+- Para compilar o programa digite `make` ou `make all` no terminal
+- Para rodar basta digitar `make run <nome_do_programa_de_entrada>`,
+ja existe um programa teste na pasta que utilizaremos, portanto o comando para rodar fica:
+ `make run ARGS=teste.txt`.
+
+#### 2.1 **Saída do programa**
+Ao rodar o programa com um arquivo de entrada será gerado um arquivo de saida
+chamado `saida.txt` que contem os tokens gerados pelo analizador lexico.
+
