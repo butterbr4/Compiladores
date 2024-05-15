@@ -39,18 +39,21 @@ Baseado-se na gramática, os tokens podem incluir:
 - **Palavras-reservadas**: `CONST`, `VAR`, `PROCEDURE`, `CALL`, `BEGIN`, `END`, `IF`, `THEN`, `WHILE`, `DO`, `ODD`
 - **Identificadores**: Sequência de letras e dígitos, começando por letra.
 - **Números inteiros**: Sequência de um ou mais dígitos.
-- **Operadores**: `:=`, `;`, `+`, `-`, `*`, `/`, `=`, `<>`, `<`, `<=`, `>`, `>=`
-- **Delimitadores**: `(`, `)`, `,`
+- **Operadores**: `+`, `-`, `*`, `/`, `=`, `<>`, `<`, `<=`, `>`, `>=`
+- **Símboloes especiais**: `:=`, `;`
+- **Delimitadores**: `(`, `)`, `,`, `.`
 - **Comentários**: `{` até `}` (ignorar o conteúdo)
 
-### 3. **Automato para as palavras-reservadas**
-![Nao encotrou a imagem palavra.png](imagens/palavra.png)
+### 3. **Automato para identificadores ou palavras-reservadas**
+![Nao encotrou a imagem identificador_ou_palavra_reservada.png](imagens/identificador_ou_palavra_reservada.png)
 ### 3. **Automato para os números inteiros**
-![Nao encotrou a imagem numero.png](imagens/numero.png)
-### 3. **Automato para os operadores**
-![Nao encotrou a imagem operador.png](imagens/operador.png)
-### 3. **Automato para os delimitadores**
-![Nao encotrou a imagem delimitador.png](imagens/delimitador.png)
+![Nao encotrou a imagem numero.png](imagens/numeros.png)
+### 3. **Automato para os operadores aritimeticos**
+![Nao encotrou a imagem operadores_aritimeticos.png](imagens/operadores_aritimeticos.png)
+### 3. **Automato para os operadores relacionais**
+![Nao encotrou a imagem operadores_relacionais.png](imagens/operadores_relacionais.png)
+### 3. **Automato para os simbolos especiais e delimitadores**
+![Nao encotrou a imagem simbolos_especiais_e_delimitadores.png](imagens/simbolos_especiais_e_delimitadores.png)
 ### 3. **Automato para os comentários**
 ![Nao encotrou a imagem comentario.png](imagens/comentario.png)
 ### 3. **Automato final**
@@ -62,7 +65,7 @@ Sistema utilizado --> Linux Ubuntu 22.04
                                                                                     
 ### 2. **Como rodar o programa**
 - Para compilar o programa digite `make` ou `make all` no terminal
-- Para rodar basta digitar `make run <nome_do_programa_de_entrada>`,
+- Para rodar basta digitar `make run <nome_do_programa_de_entrada.txt>`,
 ja existe um programa teste na pasta que utilizaremos, portanto o comando para rodar fica:
  `make run ARGS=teste.txt`.
 
@@ -70,3 +73,4 @@ ja existe um programa teste na pasta que utilizaremos, portanto o comando para r
 Ao rodar o programa com um arquivo de entrada será gerado um arquivo de saida
 chamado `saida.txt` que contem os tokens gerados pelo analizador lexico.
 
+  asdfas
