@@ -73,10 +73,6 @@ char* find(hash_table_2d_t* table, const char* key1, const char* key2) {
     if((strcmp(key1, "q6")) == 0){
         return "q6";
     }
-    if((strcmp(key1, "q18")) == 0){
-        return "q0";
-    }
-
 
     return NULL;
 }

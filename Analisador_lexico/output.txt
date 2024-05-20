@@ -20,4 +20,5 @@ c, id
 +, soma
 b, id
 END, END
-, <ERRO_LEXICO>
+{dsf s d gg &g}, comentario
+{: = , <ERRO_LEXICO>

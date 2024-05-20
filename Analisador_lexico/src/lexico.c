@@ -73,7 +73,7 @@ Token* lexico(FILE *file) {
     char final_state = 0;                   // Flag de estado final
     
     // Enquanto nao chegar no final do arquivo ou nao encontrar um estado final ou de erro, le os caracteres
-    for(int i = 0; !(final_state || error || feof(file)); i++){
+    for(int i = 0; !(final_state || error || feof(file)) && (i < tamanho_cadeia); i++){
         // Pega o caractere do arquivo
         tempStr[0] = fgetc(file);  
         
@@ -89,8 +89,8 @@ Token* lexico(FILE *file) {
         printf("find: %s\n", find(table, state, tempStr));
         strcpy(state, find(table, state, tempStr));     // Pega o proximo estado do automato finito
         
-        // Se o estado atual for q0, f1, f2, e2, f10, f12, q6 ou q18, desconsidera o caractere lido
-        if(strcmp(state, "q0") && strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12") && strcmp(state, "q6") && strcmp(state, "q18"))
+        // Se o estado atual for q0, f1, f2, e2, f10, f12 desconsidera o caractere lido
+        if(strcmp(state, "q0") && strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12"))
             strcat(buffer, tempStr);                    // Adiona o caractere lido ao buffer
         else
             printf("Desconsiderando: x%sx\n", tempStr);
@@ -157,6 +157,8 @@ Token* lexico(FILE *file) {
             tk = create_token(buffer, "abre_parenteses");
         }else if(strcmp(state, "f17") == 0){
             tk = create_token(buffer, "fecha_parenteses");
+        }else if(strcmp(state, "f18") == 0){
+            tk = create_token(buffer, "comentario");
         }else if(strcmp(state, "f19") == 0){
             tk = create_token(buffer, "virgula");
         }
@@ -173,7 +175,7 @@ Token* lexico(FILE *file) {
         free(buffer);  
         return NULL;
     }
-    
+
     // Se nao estiver em um estado final, retorna um erro lexico
     tk = create_token(buffer, "<ERRO_LEXICO>");
     free_table(table);  
