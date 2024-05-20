@@ -67,12 +67,16 @@ char* find(hash_table_2d_t* table, const char* key1, const char* key2) {
     if((strcmp(key1, "q4")) == 0){
         return "f12";
     }
-    if((strcmp(key1, "q0")) || (strcmp(key1, "q5")) == 0){
+    if((strcmp(key1, "q0") == 0) || (strcmp(key1, "q5") == 0)){
         return "e1";
     }
     if((strcmp(key1, "q6")) == 0){
         return "q6";
     }
+    if((strcmp(key1, "q18")) == 0){
+        return "q0";
+    }
+
 
     return NULL;
 }

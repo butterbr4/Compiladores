@@ -3,4 +3,5 @@ BEGIN
     a := 2;
     b := 3;
     c := @ + b
-END.
+END{dsf s d gg &g}
+{: =
