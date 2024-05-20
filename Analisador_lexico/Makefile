@@ -11,7 +11,7 @@ INC_PARAMS = $(addprefix -I ,$(SRCDIRS))
 EXECUTABLE ?= build/prog
 
 ZIPFILE    ?= ./zipfile.zip
-CFILES      = $(wildcard ./*.c) $(wildcard src/**/*.c)
+CFILES      = $(wildcard src/*.c) $(wildcard src/**/*.c)
 
 .PHONY: all clean zip run test debug
 

@@ -44,20 +44,32 @@ Baseado-se na gramática, os tokens podem incluir:
 - **Delimitadores**: `(`, `)`, `,`, `.`
 - **Comentários**: `{` até `}` (ignorar o conteúdo)
 
-### 3. **Automato para identificadores ou palavras-reservadas**
+### 2.1. **Automato para identificadores ou palavras-reservadas**
 ![Nao encotrou a imagem identificador_ou_palavra_reservada.png](imagens/identificador_ou_palavra_reservada.png)
-### 3. **Automato para os números inteiros**
+### 2.2. **Automato para os números inteiros**
 ![Nao encotrou a imagem numero.png](imagens/numeros.png)
-### 3. **Automato para os operadores aritimeticos**
+### 2.3. **Automato para os operadores aritimeticos**
 ![Nao encotrou a imagem operadores_aritimeticos.png](imagens/operadores_aritimeticos.png)
-### 3. **Automato para os operadores relacionais**
+### 2.4. **Automato para os operadores relacionais**
 ![Nao encotrou a imagem operadores_relacionais.png](imagens/operadores_relacionais.png)
-### 3. **Automato para os simbolos especiais e delimitadores**
+### 2.5. **Automato para os simbolos especiais e delimitadores**
 ![Nao encotrou a imagem simbolos_especiais_e_delimitadores.png](imagens/simbolos_especiais_e_delimitadores.png)
-### 3. **Automato para os comentários**
+### 2.6. **Automato para os comentários**
 ![Nao encotrou a imagem comentario.png](imagens/comentario.png)
-### 3. **Automato final**
+### 2.7. **Automato final**
 ![Nao encotrou a imagem final.png](imagens/final.png)
+
+### 3. **Tabela de estados do automato**
+| Estado | Letra | Número | +  | -  | *  | /  | <  | >  | =  | (  | )  | ;  | :  | ,  | .  | {  | }  | \n | \t | Espaço | Outro |
+|--------|-------|--------|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|--------|-------|
+| q0     | q1    | q2     | f3 | f4 | f5 | f6 | q3 | q4 | f7 | f16| f17| f14| q5 | f19| f15| q6 | e1 | q0 | q0 | q0     | e1    |
+| q1     | q1    | q1     | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1     | f1    |
+| q2     | f2    | q2     | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2     | f2    |
+| q3     | f10   | f10    | f10| f10| f10| f10| f10| f8 | f9 | f10| f10| f10| f10| f10| f10| f10| f10| f10| f10| f10    | f10   |
+| q4     | f12   | f12    | f12| f12| f12| f12| f12| f12| f11| f12| f12| f12| f12| f12| f12| f12| f12| f12| f12| f12    | f12   |
+| q5     | e1    | e1     | e1 | e1 | e1 | e1 | e1 | e1 | f13| e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1     | e1    |
+| q6     | q6    | q6     | q6 | q6 | q6 | q6 | q6 | q6 | q6 | q6 | q6 | q6 | q6 | q6 | q6 | q6 | f18| e2 | q6 | q6     | q6    |
+
 
 ## Rodando e Compilando o programa
 ### 1. **Requisitos de sistema**
@@ -73,4 +85,9 @@ ja existe um programa teste na pasta que utilizaremos, portanto o comando para r
 Ao rodar o programa com um arquivo de entrada será gerado um arquivo de saida
 chamado `saida.txt` que contem os tokens gerados pelo analizador lexico.
 
-  asdfas
+# **O que falta fazer**
+
+- Arrumar o bgl do lookahead
+- Colocar q o estado dos erros lexicos no programa esta como NULL pois facilita a implementacao
+- Colocar q caso o automato nao chege em um estado final é para ele retornar um erro
+- Tirar o bgl q facilita o teste pra funcionar a entrada
