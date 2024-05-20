@@ -15,6 +15,8 @@ unsigned int hash_function(const char* key) {
     return value % TABLE_SIZE;  
 }
 
+
+// Função para criar uma tabela hash 2D
 hash_table_2d_t* create_table() {
     hash_table_2d_t* table = malloc(sizeof(hash_table_2d_t));
     table->buckets = malloc(sizeof(node_t**) * TABLE_SIZE);
@@ -29,6 +31,7 @@ hash_table_2d_t* create_table() {
     return table;
 }
 
+// Função para inserir um valor na tabela
 void insert(hash_table_2d_t* table, const char* key1, const char* key2, const char* value) {
     unsigned int index1 = hash_function(key1);
     unsigned int index2 = hash_function(key2);
@@ -55,25 +58,24 @@ char* find(hash_table_2d_t* table, const char* key1, const char* key2) {
     }
 
     // Essa parte tem como papel simular o comportamento da transicao pelo caracter "outros"
-    if((strcmp(key1, "q1")) == 0){
+    if((strcmp(key1, "q1")) == 0){  // Se o estado atual for q1 e o simbolo for "outros" vai para o estado f1
         return "f1";
     }
-    if(strcmp(key1, "q2") == 0){
+    if(strcmp(key1, "q2") == 0){    // Se o estado atual for q2 e o simbolo for "outros" vai para o estado f2
         return "f2";
     }
-    if(strcmp(key1, "q3") == 0){
+    if(strcmp(key1, "q3") == 0){    // Se o estado atual for q3 e o simbolo for "outros" vai para o estado f10
         return "f10";
     }
-    if((strcmp(key1, "q4")) == 0){
+    if((strcmp(key1, "q4")) == 0){  // Se o estado atual for q4 e o simbolo for "outros" vai para o estado f12
         return "f12";
     }
-    if((strcmp(key1, "q0") == 0) || (strcmp(key1, "q5") == 0)){
+    if((strcmp(key1, "q0") == 0) || (strcmp(key1, "q5") == 0)){ // Se o estado atual for q0 ou q5 e o simbolo for "outros" vai para o estado e1
         return "e1";
     }
-    if((strcmp(key1, "q6")) == 0){
+    if((strcmp(key1, "q6")) == 0){  // Se o estado atual for q6 e o simbolo for "outros" vai para o estado q6
         return "q6";
     }
-
     return NULL;
 }
 
@@ -102,6 +104,7 @@ int count_collisions(hash_table_2d_t* table) {
     return total_collisions;
 }
 
+// Função para deletar um valor da tabela
 int delete(hash_table_2d_t* table, const char* key1, const char* key2) {
     unsigned int index1 = hash_function(key1);
     unsigned int index2 = hash_function(key2);
@@ -123,6 +126,7 @@ int delete(hash_table_2d_t* table, const char* key1, const char* key2) {
     return 0;
 }
 
+// Função para liberar a memória alocada para a tabela hash
 void free_table(hash_table_2d_t* table) {
     for (int i = 0; i < TABLE_SIZE; i++) {
         for (int j = 0; j < TABLE_SIZE; j++) {

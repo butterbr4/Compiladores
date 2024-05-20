@@ -42,4 +42,4 @@ $(EXECUTABLE): $(CFILES)
 	$(CC) $(CFLAGS) $(INC_PARAMS) -o $@ $^ $(LDFLAGS) $(PDFLAGS)
 
 valgrind: $(EXECUTABLE)
-	valgrind $(VDFLAGS) ./$(EXECUTABLE)
+	valgrind $(VDFLAGS) ./$(EXECUTABLE) $(ARGS)

@@ -64,7 +64,7 @@ Baseado-se na gramática, os tokens podem incluir:
 |--------|-------|--------|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|--------|-------|
 | q0     | q1    | q2     | f3 | f4 | f5 | f6 | q3 | q4 | f7 | f16| f17| f14| q5 | f19| f15| q6 | e1 | q0 | q0 | q0     | e1    |
 | q1     | q1    | q1     | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1 | f1     | f1    |
-| q2     | f2    | q2     | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2     | f2    |
+| q2     | e1    | q2     | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2 | f2     | f2    |
 | q3     | f10   | f10    | f10| f10| f10| f10| f10| f8 | f9 | f10| f10| f10| f10| f10| f10| f10| f10| f10| f10| f10    | f10   |
 | q4     | f12   | f12    | f12| f12| f12| f12| f12| f12| f11| f12| f12| f12| f12| f12| f12| f12| f12| f12| f12| f12    | f12   |
 | q5     | e1    | e1     | e1 | e1 | e1 | e1 | e1 | e1 | f13| e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1 | e1     | e1    |
@@ -85,9 +85,3 @@ ja existe um programa teste na pasta que utilizaremos, portanto o comando para r
 Ao rodar o programa com um arquivo de entrada será gerado um arquivo de saida
 chamado `saida.txt` que contem os tokens gerados pelo analizador lexico.
 
-# **O que falta fazer**
-
-- Arrumar o bgl do lookahead
-- Colocar q o estado dos erros lexicos no programa esta como NULL pois facilita a implementacao
-- Colocar q caso o automato nao chege em um estado final é para ele retornar um erro
-- Tirar o bgl q facilita o teste pra funcionar a entrada

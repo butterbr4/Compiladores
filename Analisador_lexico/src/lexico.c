@@ -82,30 +82,17 @@ Token* lexico(FILE *file) {
             tempStr[0] = ' ';
         } 
         
-
-        printf("Caractere lido: x%sx\n", tempStr);
-
-        printf("Estado atual: x%sx\n", state);
-        printf("find: %s\n", find(table, state, tempStr));
         strcpy(state, find(table, state, tempStr));     // Pega o proximo estado do automato finito
         
-        // Se o estado atual for q0, f1, f2, e2, f10, f12 desconsidera o caractere lido
+        // Se o estado atual for q0, f1, f2, e2, f10, f12 nao adiciona o caractere lido ao buffer
         if(strcmp(state, "q0") && strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12"))
             strcat(buffer, tempStr);                    // Adiona o caractere lido ao buffer
-        else
-            printf("Desconsiderando: x%sx\n", tempStr);
-        printf("Novo estado: x%sx\n", state);
-        printf("Buffer: x%sx\n", buffer);
-        printf("i = %d\n", i);
     
         final_state = (strncmp(state, "f", 1) == 0);    // Verifica se o estado atual é final
         error = (strncmp(state, "e", 1) == 0);          // Verifica se o estado atual é de erro
-        printf("error: %d\n", error);
-        printf("final_state: %d\n\n", final_state);
-
     }
     
-    if(error){
+    if(error){  // Se o estado atual for de erro, retorna um erro lexico ou de comentario
         if(strcmp(state, "e1") == 0){
             tk = create_token(buffer, "<ERRO_LEXICO>");
         } else {
@@ -115,7 +102,7 @@ Token* lexico(FILE *file) {
         free(buffer); 
         return tk;
     }
-    if(final_state){
+    if(final_state){    // Se o estado atual for final, cria o token correspondente
         if(strcmp(state, "f1") == 0){
             if(is_keyword(buffer)){ // Se for uma palavra reservada o token é "keyword" senão é "id"
                 tk = create_token(buffer, buffer);
@@ -169,8 +156,7 @@ Token* lexico(FILE *file) {
     }
 
     // Terminou de ler o arquivo mas ele pode nao estar em um estado final
-    printf("Terminou de ler o arquivo\n");
-    if(strcmp(state, "q0") == 0){   // Se o estado atual for q0, retorna NULL
+    if(strcmp(state, "q0") == 0){   // Se o estado atual for q0, retorna NULL pois só leu espaços em branco
         free_table(table);  
         free(buffer);  
         return NULL;
