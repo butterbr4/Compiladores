@@ -1,0 +1,18 @@
+CONST, CONST
+ond, id
+=, igual
+00x, <ERRO_LEXICO>
+1F, <ERRO_LEXICO>
+;, ponto_virgula
+VAR, VAR
+var, id
+_, <ERRO_LEXICO>
+1, numero
+,, virgula
+1, numero
+{ asdfkj asld 23 */d{ {[]];/?!@#$%*(")@}, comentario
+1, numero
+\n, <ERRO_COMENTARIO>
+END, END
+., ponto
+{asdfjalsdfj , <ERRO_LEXICO>

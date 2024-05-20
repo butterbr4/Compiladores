@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     }
 
     // Abre o arquivo de saida
-    FILE *file_out = fopen("output.txt", "w");
+    FILE *file_out = fopen("saida.txt", "w");
     if (file_out == NULL) {
         printf("Failed to open file\n");
         exit(-1);

@@ -1,17 +1,7 @@
-CONST first = 100, second = 00x1F;
-VAR var_1, $variable2;
+CONST ond = 00x1F;
+VAR var_1,
 1{ asdfkj asld 23 */d{ {[]];/?!@#$%*(")@}
-PROCEDURE %newProc;
-    VAR local;
-    CONST num = 12.34;
-BEGIN
-    var_1 := first + second;
-    CALL $variable2
-    IF ODD first THEN
-        BEGIN
-            local := (first * -num);
-            WHILE local > 0 DO
-                local := local - 1
-        END;
-END.
+
 1{ asdfkj asld 23 */d{ {[]];/?!@#$%*(")@
+END.
+{asdfjalsdfj

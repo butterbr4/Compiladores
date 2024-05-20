@@ -1,4 +1,6 @@
 ## **O Analisador Léxico**
+    - Mateus Satos Messias 12548000
+    - Pedro Borges Gudin 12547997
 
 ### 1. **Gramática da linguagem PL/0**
 ```
