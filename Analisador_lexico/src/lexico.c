@@ -65,7 +65,7 @@ Token* lexico(FILE *file) {
     hash_table_2d_t *table = create_transition_table();             // Cria a tabela de transição
     
     char *buffer = calloc(tamanho_cadeia + 1, sizeof(char));        // Guarda os caracteres lidos pelo automato finito
-    Token *tk;                                                      // Token a ser retornado
+    Token *tk = NULL;                                                      // Token a ser retornado
     char state[10] = "q0";                                          // Estado atual do automato finito
     char tempStr[] = {' ', '\0'};                                   // String temporaria para o caracterer lido
     
