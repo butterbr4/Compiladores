@@ -83,11 +83,17 @@ Token* lexico(FILE *file) {
         } 
         
         strcpy(state, find(table, state, tempStr));     // Pega o proximo estado do automato finito
-        
+
         // Se o estado atual for q0, f1, f2, e2, f10, f12 nao adiciona o caractere lido ao buffer
-        if(strcmp(state, "q0") && strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12"))
+        if(strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12"))
             strcat(buffer, tempStr);                    // Adiona o caractere lido ao buffer
-    
+
+        // Se o estado atual for q0, zera o contador de caracteres lidos e limpa o buffer
+        if(strcmp(state, "q0") == 0){
+            i = 0;  // Se o estado atual for q0, zera o contador de caracteres lidos
+            for(int j = 0; j <= tamanho_cadeia; j++) buffer[j] = '\0'; // Limpa o buffer
+        }
+
         final_state = (strncmp(state, "f", 1) == 0);    // Verifica se o estado atual é final
         error = (strncmp(state, "e", 1) == 0);          // Verifica se o estado atual é de erro
     }
@@ -96,12 +102,13 @@ Token* lexico(FILE *file) {
         if(strcmp(state, "e1") == 0){
             tk = create_token(buffer, "<ERRO_LEXICO>");
         } else {
-            tk = create_token("\\n", "<ERRO_COMENTARIO>");
+            tk = create_token(buffer, "<ERRO_COMENTARIO_NAO_TERMINADO>");
         }
         free_table(table);    
         free(buffer); 
         return tk;
     }
+
     if(final_state){    // Se o estado atual for final, cria o token correspondente
         if(strcmp(state, "f1") == 0){
             if(is_keyword(buffer)){ // Se for uma palavra reservada o token é "keyword" senão é "id"
@@ -144,8 +151,6 @@ Token* lexico(FILE *file) {
             tk = create_token(buffer, "abre_parenteses");
         }else if(strcmp(state, "f17") == 0){
             tk = create_token(buffer, "fecha_parenteses");
-        }else if(strcmp(state, "f18") == 0){
-            tk = create_token(buffer, "comentario");
         }else if(strcmp(state, "f19") == 0){
             tk = create_token(buffer, "virgula");
         }

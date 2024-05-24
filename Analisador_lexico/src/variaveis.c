@@ -90,7 +90,7 @@ char *transition_table[][3] = { // estado atual,  simbolo,  proximo estado
     {"q5", "=", "f13"},
 
     // Transições a partir de q6
-    {"q6", "}", "f18"}, {"q6", "\n", "e2"},
+    {"q6", "}", "q0"}, {"q6", "\n", "e2"},
         
     {NULL, NULL, NULL}  
 };
