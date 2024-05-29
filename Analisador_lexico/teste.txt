@@ -11,3 +11,4 @@ BGIN {erro em palavra chave}
 		END
 {testando comentário não fechado
 END.
+{3456$%*dfgh

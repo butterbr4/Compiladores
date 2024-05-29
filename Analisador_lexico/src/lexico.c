@@ -84,7 +84,7 @@ Token* lexico(FILE *file) {
         
         strcpy(state, find(table, state, tempStr));     // Pega o proximo estado do automato finito
 
-        // Se o estado atual for q0, f1, f2, e2, f10, f12 nao adiciona o caractere lido ao buffer
+        // Se o estado atual for f1, f2, e2, f10, f12 nao adiciona o caractere lido ao buffer
         if(strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12"))
             strcat(buffer, tempStr);                    // Adiona o caractere lido ao buffer
 

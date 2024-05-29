@@ -79,7 +79,7 @@ Sistema utilizado --> Linux Ubuntu 22.04
                                                                                     
 ### 2. **Como rodar o programa**
 - Para compilar o programa digite `make` ou `make all` no terminal
-- Para rodar basta digitar `make run <nome_do_programa_de_entrada.txt>`,
+- Para rodar basta digitar `make run ARGS=<nome_do_programa_de_entrada.txt>`,
 ja existe um programa teste na pasta que utilizaremos, portanto o comando para rodar fica:
  `make run ARGS=teste.txt`.
 
