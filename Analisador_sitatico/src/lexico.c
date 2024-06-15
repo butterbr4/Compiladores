@@ -61,9 +61,15 @@ int is_keyword(const char *str) {
 
 // Esta funcao recebe um arquivo e retorna um token 
 Token* lexico(FILE *file) {
-    if(feof(file)) return NULL;                                     // Se chegou no final do arquivo, retorna NULL 
-    hash_table_2d_t *table = create_transition_table();             // Cria a tabela de transição
-    
+    static hash_table_2d_t *table = NULL;   // Static para manter a tabela toda vez que a funcao for chamada
+    if (!table) {
+        table = create_transition_table();  // Cria a tabela de transição apenas uma vez
+    }
+    if(feof(file)){
+        free_table(table);
+        return NULL;                                     // Se chegou no final do arquivo, retorna NULL 
+    }
+
     char *buffer = calloc(tamanho_cadeia + 1, sizeof(char));        // Guarda os caracteres lidos pelo automato finito
     Token *tk = NULL;                                                      // Token a ser retornado
     char state[10] = "q0";                                          // Estado atual do automato finito
@@ -104,7 +110,7 @@ Token* lexico(FILE *file) {
         } else {
             tk = create_token(buffer, "<ERRO_COMENTARIO_NAO_TERMINADO>");
         }
-        free_table(table);    
+    
         free(buffer); 
         return tk;
     }
@@ -155,21 +161,20 @@ Token* lexico(FILE *file) {
             tk = create_token(buffer, "virgula");
         }
     
-        free_table(table);  
+  
         free(buffer);   
         return tk;
     }
 
     // Terminou de ler o arquivo mas ele pode nao estar em um estado final
     if(strcmp(state, "q0") == 0){   // Se o estado atual for q0, retorna NULL pois só leu espaços em branco
-        free_table(table);  
+        free_table(table);
         free(buffer);  
         return NULL;
     }
 
     // Se nao estiver em um estado final, retorna um erro lexico
-    tk = create_token(buffer, "<ERRO_LEXICO>");
-    free_table(table);  
+    tk = create_token(buffer, "<ERRO_LEXICO>");  
     free(buffer);  
     return tk;
 }
