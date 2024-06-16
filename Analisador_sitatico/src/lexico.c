@@ -5,10 +5,11 @@
 #include "../headers/hash_2d.h"
 
 // Cria um token
-Token* create_token(char *cadeia, char *tipo){
+Token* create_token(char *cadeia, char *tipo, unsigned int linha){
     Token *tk = malloc(sizeof(Token));
     tk->cadeia = strdup(cadeia);    // Copia a cadeia para o token
     tk->tipo = strdup(tipo);        // Copia o tipo para o token
+    tk->line = linha;              // Copia a linha para o token
     return tk;
 }
 
@@ -77,22 +78,29 @@ Token* lexico(FILE *file) {
     
     char error = 0;                         // Flag de estado final erro
     char final_state = 0;                   // Flag de estado final
+    static unsigned int line = 1;          // Contador de linhas
     
     // Enquanto nao chegar no final do arquivo ou nao encontrar um estado final ou de erro, le os caracteres
     for(int i = 0; !(final_state || error || feof(file)) && (i < tamanho_cadeia); i++){
         // Pega o caractere do arquivo
         tempStr[0] = fgetc(file);  
-        
+
+
         // Se chegou no final do arquivo, adiciona um espaço para indicar o fim do arquivo
         if(feof(file)){
             tempStr[0] = ' ';
-        } 
+        }
         
         strcpy(state, find(table, state, tempStr));     // Pega o proximo estado do automato finito
 
         // Se o estado atual for f1, f2, e2, f10, f12 nao adiciona o caractere lido ao buffer
-        if(strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12"))
-            strcat(buffer, tempStr);                    // Adiona o caractere lido ao buffer
+        if(strcmp(state, "f1") && strcmp(state, "f2") && strcmp(state, "e2") && strcmp(state, "f10") && strcmp(state, "f12")){
+            // Se o caractere lido for um \n, incrementa o contador de linhas
+            if(tempStr[0] == '\n'){
+                line++;
+            }
+            strcat(buffer, tempStr);        // Adiona o caractere lido ao buffer
+        }
 
         // Se o estado atual for q0, zera o contador de caracteres lidos e limpa o buffer
         if(strcmp(state, "q0") == 0){
@@ -106,9 +114,10 @@ Token* lexico(FILE *file) {
     
     if(error){  // Se o estado atual for de erro, retorna um erro lexico ou de comentario
         if(strcmp(state, "e1") == 0){
-            tk = create_token(buffer, "<ERRO_LEXICO>");
+            tk = create_token(buffer, "<ERRO_LEXICO>", line);
         } else {
-            tk = create_token(buffer, "<ERRO_COMENTARIO_NAO_TERMINADO>");
+            tk = create_token(buffer, "<ERRO_COMENTARIO_NAO_TERMINADO>", line);
+            if(!feof(file)) ungetc(tempStr[0],file); // Devolve o ultimo caractere lido para o arquivo
         }
     
         free(buffer); 
@@ -118,49 +127,48 @@ Token* lexico(FILE *file) {
     if(final_state){    // Se o estado atual for final, cria o token correspondente
         if(strcmp(state, "f1") == 0){
             if(is_keyword(buffer)){ // Se for uma palavra reservada o token é "keyword" senão é "id"
-                tk = create_token(buffer, buffer);
+                tk = create_token(buffer, buffer, line);
             }else
-                tk = create_token(buffer, "id");
+                tk = create_token(buffer, "id", line);
             if(!feof(file)) ungetc(tempStr[0],file); // Devolve o ultimo caractere lido para o arquivo
         }else if(strcmp(state, "f2") == 0){
             if(!feof(file)) ungetc(tempStr[0],file); // Devolve o ultimo caractere lido para o arquivo
-            tk = create_token(buffer, "numero");
+            tk = create_token(buffer, "numero", line);
         }else if(strcmp(state, "f3") == 0){
-            tk = create_token(buffer, "soma");
+            tk = create_token(buffer, "soma", line);
         }else if(strcmp(state, "f4") == 0){
-            tk = create_token(buffer, "sub");
+            tk = create_token(buffer, "sub", line);
         }else if(strcmp(state, "f5") == 0){
-            tk = create_token(buffer, "mult");
+            tk = create_token(buffer, "mult", line);
         }else if(strcmp(state, "f6") == 0){
-            tk = create_token(buffer, "div");
+            tk = create_token(buffer, "div", line);
         }else if(strcmp(state, "f7") == 0){
-            tk = create_token(buffer, "igual");
+            tk = create_token(buffer, "igual", line);
         }else if(strcmp(state, "f8") == 0){
-            tk = create_token(buffer, "diferente");
+            tk = create_token(buffer, "diferente", line);
         }else if(strcmp(state, "f9") == 0){
-            tk = create_token(buffer, "menor_igual");
+            tk = create_token(buffer, "menor_igual", line);
         }else if(strcmp(state, "f10") == 0){
-            tk = create_token(buffer, "menor");
+            tk = create_token(buffer, "menor", line);
             if(!feof(file)) ungetc(tempStr[0],file); // Devolve o ultimo caractere lido para o arquivo
         }else if(strcmp(state, "f11") == 0){
-            tk = create_token(buffer, "maior_igual");
+            tk = create_token(buffer, "maior_igual", line);
         }else if(strcmp(state, "f12") == 0){
-            tk = create_token(buffer, "maior");
+            tk = create_token(buffer, "maior", line);
             if(!feof(file)) ungetc(tempStr[0],file); // Devolve o ultimo caractere lido para o arquivo
         }else if(strcmp(state, "f13") == 0){
-            tk = create_token(buffer, "atribuicao");
+            tk = create_token(buffer, "atribuicao", line);
         }else if(strcmp(state, "f14") == 0){
-            tk = create_token(buffer, "ponto_virgula");
+            tk = create_token(buffer, "ponto_virgula", line);
         }else if(strcmp(state, "f15") == 0){
-            tk = create_token(buffer, "ponto");
+            tk = create_token(buffer, "ponto", line);
         }else if(strcmp(state, "f16") == 0){
-            tk = create_token(buffer, "abre_parenteses");
+            tk = create_token(buffer, "abre_parenteses", line);
         }else if(strcmp(state, "f17") == 0){
-            tk = create_token(buffer, "fecha_parenteses");
+            tk = create_token(buffer, "fecha_parenteses", line);
         }else if(strcmp(state, "f19") == 0){
-            tk = create_token(buffer, "virgula");
+            tk = create_token(buffer, "virgula", line);
         }
-    
   
         free(buffer);   
         return tk;
@@ -174,7 +182,7 @@ Token* lexico(FILE *file) {
     }
 
     // Se nao estiver em um estado final, retorna um erro lexico
-    tk = create_token(buffer, "<ERRO_LEXICO>");  
+    tk = create_token(buffer, "<ERRO_LEXICO>", line);  
     free(buffer);  
     return tk;
 }

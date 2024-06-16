@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         token = lexico(file_in);
           
         if(token != NULL){  // Se nao chegou no final do arquivo escreve o token no arquivo de saida
-            fprintf(file_out, "%s, %s\n", token->cadeia, token->tipo);
+            fprintf(file_out, "%s, %s, %d\n", token->cadeia, token->tipo, token->line);
             free_token(token);
         } else {
             break;  // Se chegou no final do arquivo, sai do loop
