@@ -35,9 +35,151 @@ Além disso:
 * identificadores são formados por letras e dígitos, começando por letra
 * só há números inteiros, formados por um ou mais dígitos (entre 0 e 9)
 
-### 2. **Definição de Tokens**
-Baseado-se na gramática, os tokens podem incluir:
+### 2. **Esquema da Gramática**
+```mermaid
+    graph LR;
 
+    programa --> bloco --> ponto((.))
+
+    subgraph bloco
+        direction LR
+        declaracao --> comando
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph declaracao
+        direction LR
+        constante --> variavel --> procedimento
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph constante
+        direction LR
+        const((CONST)) --> ident((ident)) --> igual((=)) --> numero((numero)) --> mais_const --> ponto_virg((;))
+        lambda(("λ"))
+    end
+
+    subgraph mais_const
+        direction LR
+        virgula((,)) --> ident2((ident)) --> igual2((=)) --> numero2((numero)) --> mais_const2[mais_const] 
+        lambda(("λ"))
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph variavel
+        direction LR
+        var((VAR)) --> ident3((ident)) --> mais_var --> ponto_virg2((;))
+        lambda2(("λ"))
+    end
+
+    subgraph mais_var
+        direction LR
+        virgula2((,)) --> ident4((ident)) --> mais_var2[mais_var] 
+        lambda3(("λ"))
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph procedimento
+        direction LR
+        proc((PROCEDURE)) --> ident5((ident)) --> ponto_virg3((;)) --> blocoo --> ponto_virg4((;)) --> procedimento2[procedimento]
+        lambda4(("λ"))
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph comando
+        direction LR
+        ident6((ident)) --> expressao
+        call((CALL)) --> ident7((ident))
+        begin((BEGIN)) --> comando2[comando] --> mais_cmd --> fim(END)
+        se((IF)) --> condicao --> entao((THEN)) --> comando3[comando]
+        enquanto((WHILE)) --> condicao2[condicao] --> faca((DO)) --> comando4[comando]
+        lambda5(("λ"))
+    end
+
+    subgraph mais_cmd
+        direction LR
+        ponto_virg5((;)) --> comando5[comando] --> mais_cmd2[mais_cmd]
+        lambda6(("λ"))
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph expressao
+        direction LR
+        operador_unario --> termo --> mais_termos
+    end
+
+    subgraph operador_unario
+        direction LR
+        menos(("-"))
+        mais(("+"))
+        lambda7(("λ"))
+    end
+
+    subgraph termo
+        direction LR
+        fator --> mais_fatores
+    end
+
+    subgraph mais_termos
+        direction LR
+        menos2(("-")) --> termo2[termo] --> mais_termos2[mais_termos]
+        mais2(("+")) --> termo3[termo] --> mais_termos3[mais_termos]
+        lambda8(("λ"))
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph fator
+        direction LR
+        ident8((ident))
+        numero3((numero))
+        abre_par(("(")) --> expressao2[expressao] --> fecha_par((")"))
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph mais_fatores
+        direction LR
+        asterisco(("*")) --> fator2[fator] --> mais_fatores2[mais_fatores]
+        barra(("/")) --> fator3[fator] --> mais_fatores3[mais_fatores]
+        lambda9(("λ"))
+    end
+```
+```mermaid
+    graph LR;
+
+    subgraph condicao
+        direction LR
+        odd(("ODD")) --> expressao3[expressao]
+        expressao4[expressao] --> relacional --> expressao5[expressao]
+    end
+
+    subgraph relacional
+        direction LR
+        igual3(("="))
+        difer(("<>"))
+        menor(("<"))
+        menorigual(("<="))
+        maior((">"))
+        maiorigual((">="))
+    end
+```
+Baseado-se na gramática, os tokens podem incluir:
+    
 - **Palavras-reservadas**: `CONST`, `VAR`, `PROCEDURE`, `CALL`, `BEGIN`, `END`, `IF`, `THEN`, `WHILE`, `DO`, `ODD`
 - **Identificadores**: Sequência de letras e dígitos, começando por letra.
 - **Números inteiros**: Sequência de um ou mais dígitos.

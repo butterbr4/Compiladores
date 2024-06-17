@@ -26,18 +26,14 @@ int main(int argc, char **argv) {
     }
 
     Token *token;  // Inicializa token
+    token = lexico(file_in);
 
-    // Enquanto nao terminar de receber todos os tokens, pega-se o proximo token e escreve no arquivo de saida
-    while(1){
-        token = lexico(file_in);
-          
-        if(token != NULL){  // Se nao chegou no final do arquivo escreve o token no arquivo de saida
-            fprintf(file_out, "%s, %s, %d\n", token->cadeia, token->tipo, token->line);
-            free_token(token);
-        } else {
-            break;  // Se chegou no final do arquivo, sai do loop
-        }
-
+    if(sintatico(token, file_in)){  // Se nao houver erros sintaticos na compilacao
+        fprintf("Compilacao realizada com sucesso\n");
+        free_token(token);
+    } else {
+        fprintf("Erro na compilacao\n");
+        free_token(token);
     }
 
     fclose(file_in);   // Fecha o arquivo de entrada
