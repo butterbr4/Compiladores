@@ -39,7 +39,10 @@ Além disso:
 ```mermaid
     graph LR;
 
-    programa --> bloco --> ponto((.))
+    subgraph programa 
+        direction LR
+        bloco --> ponto((.))
+    end
 
     subgraph bloco
         direction LR

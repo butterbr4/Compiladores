@@ -25,15 +25,12 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
-    Token *token;  // Inicializa token
-    token = lexico(file_in);
+   
 
-    if(sintatico(token, file_in)){  // Se nao houver erros sintaticos na compilacao
-        fprintf("Compilacao realizada com sucesso\n");
-        free_token(token);
+    if(sintatico(file_in)){  // Se nao houver erros sintaticos na compilacao
+        printf("Compilacao realizada com sucesso\n");
     } else {
-        fprintf("Erro na compilacao\n");
-        free_token(token);
+        printf("Erro na compilacao\n");
     }
 
     fclose(file_in);   // Fecha o arquivo de entrada

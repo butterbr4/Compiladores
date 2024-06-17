@@ -2,5 +2,6 @@
 #define HEADER_H
 
 #include "lexico.h"
+#include "sintatico.h"
 
 #endif
