@@ -35,7 +35,7 @@ Além disso:
 * identificadores são formados por letras e dígitos, começando por letra
 * só há números inteiros, formados por um ou mais dígitos (entre 0 e 9)
 
-### 4. **Mudanças do Léxico**
+### 2. **Mudanças do Léxico**
 Mudou-se algumas coisas do analisador léxico dentre elas foi feito uma otimizacao deixando a tabela de transicao estatica o que melhorou consideravelmente a performance, além de adicionar a linha do token. É importante citar que o léxico nao retorna um token `NULL` como forma de marcar o fim do programa, agora ele retorna um token com os campos `cadeia = NULL`, `tipo = final`, `line` contendo a linha final do programa.
 
 ### 3. **Esquema da Gramática**
@@ -184,6 +184,28 @@ Mudou-se algumas coisas do analisador léxico dentre elas foi feito uma otimizac
         maiorigual((">="))
     end
 ```
+
+### 4. **Tabela Primeiro e Seguidor da Gramatica**
+
+| Não-Terminal   | First                                   | Follow                        |
+|----------------|-----------------------------------------|-------------------------------|
+| programa       | { CONST, VAR, PROCEDURE, ident, CALL, ; } | { $ }                         |
+| bloco          | { CONST, VAR, PROCEDURE, ident, CALL, ; } | { ., ; }                      |
+| declaracao     | { CONST, VAR, PROCEDURE, λ }            | { ident, CALL, BEGIN, IF, WHILE }|
+| constante      | { CONST, λ }                            | { VAR, PROCEDURE, ident, CALL, BEGIN, IF, WHILE } |
+| variavel       | { VAR, λ }                              | { PROCEDURE, ident, CALL, BEGIN, IF, WHILE } |
+| procedimento   | { PROCEDURE, λ }                        | { ident, CALL, BEGIN, IF, WHILE }|
+| comando        | { ident, CALL, BEGIN, IF, WHILE, λ }    | { END, ; }                    |
+| mais_cmd       | { ;, λ }                                | { END }                       |
+| expressao      | { -, +, ident, number, ( }              | { ), ;, END, =, <>, <, <=, >, >= }|
+| operador_unario| { -, +, λ }                             | { ident, number, ( }          |
+| termo          | { ident, number, ( }                    | { -, +, ), ;, END, =, <>, <, <=, >, >= } |
+| mais_termos    | { -, +, λ }                             | { ), ;, END, =, <>, <, <=, >, >= }|
+| fator          | { ident, number, ( }                    | { *, /, -, +, ), ;, END, =, <>, <, <=, >, >= } |
+| mais_fatores   | { *, /, λ }                             | { -, +, ), ;, END, =, <>, <, <=, >, >= } |
+| condicao       | { ODD, -, +, ident, number, ( }         | { THEN, DO }                  |
+| relacional     | { =, <>, <, <=, >, >= }                 | { ident, number, ( }          |
+
 
 
 ## **Rodando e Compilando o programa**

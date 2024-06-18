@@ -22,18 +22,10 @@ int sintatico(FILE *file){
         return 0;
     }
 
-    // bloco( );
-    // procedimento( );
-    // mais_const( );
-    // mais_var( );
-    // comando( );
-    // expressao( );
-    // mais_cmd( );
-    // mais_termos( );
-
-
-    Token *token = lexico(file);  // Le o proximo token
+    bloco( );   
     
+    Token *token = lexico(file);  // Le o proximo token
+
     if(tk_type(token,"ponto")){  // Se terminar o programa com ponto
         free_token(token);
         return 1;
@@ -42,3 +34,33 @@ int sintatico(FILE *file){
     free_token(token);
     return 0;
 }
+
+
+void bloco( ){
+    Token *token = lexico(file_out);  // Le o proximo token
+
+    if(tk_type(token,"const")){  // Se for const
+        dcl_const( );  // Chama dcl_const
+        token = lexico(file_out);  // Le o proximo token
+    }
+
+    if(tk_type(token,"ponto_virgula")){  // Se for ponto_virgula
+        dcl_var( );  // Chama dcl_var
+        token = lexico(file_out);  // Le o proximo token
+    }
+
+    if(tk_type(token,"ponto_virgula")){  // Se for ponto_virgula
+        dcl_proc( );  // Chama dcl_proc
+        token = lexico(file_out);  // Le o proximo token
+    }
+
+    comando( );  // Chama comando
+}
+
+// procedimento( );
+    // mais_const( );
+    // mais_var( );
+    // comando( );
+    // expressao( );
+    // mais_cmd( );
+    // mais_termos( );
