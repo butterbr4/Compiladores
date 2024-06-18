@@ -18,21 +18,14 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
-    // Abre o arquivo de saida
-    FILE *file_out = fopen("saida.txt", "w");
-    if (file_out == NULL) {
-        printf("Failed to open file\n");
-        exit(-1);
-    }
-
-   
-
     if(sintatico(file_in)){  // Se nao houver erros sintaticos na compilacao
-        printf("Compilacao realizada com sucesso\n");
+        fprintf(file_out, "Compilação realizada com sucesso, parece que você se tornou um mestre da programação!\n");
     } else {
-        printf("Erro na compilacao\n");
+        fprintf(file_out, "\nCada erro é uma chance de aprender. Não desista!\n");
     }
 
     fclose(file_in);   // Fecha o arquivo de entrada
+    // Ao chamar a funcao sintatico() é criado um arquivo
+    // de saida "saida.txt" e é preciso fechá-lo
     fclose(file_out);   // Fecha o arquivo de saida
 }

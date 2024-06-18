@@ -8,6 +8,8 @@
 int tk_type(Token *token, const char *type);
 
 // Funcao que verifica a sintaxe do codigo e retorna 1 se nao houver erros, 0 caso contrario
-int sintatico(FILE *file); 
+int sintatico(FILE *file);
+
+extern FILE *file_out;  // Arquivo de saida
 
 #endif

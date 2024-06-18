@@ -66,9 +66,12 @@ Token* lexico(FILE *file) {
     if (!table) {
         table = create_transition_table();  // Cria a tabela de transição apenas uma vez
     }
+
+    static unsigned int line = 1;          // Contador de linhas
+    
     if(feof(file)){
         free_table(table);
-        return NULL;                                     // Se chegou no final do arquivo, retorna NULL 
+        return (create_token("", "final", line));  // Token de final de arquivo
     }
 
     char *buffer = calloc(tamanho_cadeia + 1, sizeof(char));        // Guarda os caracteres lidos pelo automato finito
@@ -78,7 +81,6 @@ Token* lexico(FILE *file) {
     
     char error = 0;                         // Flag de estado final erro
     char final_state = 0;                   // Flag de estado final
-    static unsigned int line = 1;          // Contador de linhas
     
     // Enquanto nao chegar no final do arquivo ou nao encontrar um estado final ou de erro, le os caracteres
     for(int i = 0; !(final_state || error || feof(file)) && (i < tamanho_cadeia); i++){
@@ -176,9 +178,10 @@ Token* lexico(FILE *file) {
 
     // Terminou de ler o arquivo mas ele pode nao estar em um estado final
     if(strcmp(state, "q0") == 0){   // Se o estado atual for q0, retorna NULL pois só leu espaços em branco
+        tk = create_token("", "final", line);  // Token de final de arquivo
         free_table(table);
         free(buffer);  
-        return NULL;
+        return tk;
     }
 
     // Se nao estiver em um estado final, retorna um erro lexico

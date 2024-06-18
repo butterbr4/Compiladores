@@ -1,0 +1,3 @@
+Erro sintático na linha 1: ponto final esperado
+
+Cada erro é uma chance de aprender. Não desista!
