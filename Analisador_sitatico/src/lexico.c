@@ -183,9 +183,9 @@ Token* lexico(FILE *file) {
         free(buffer);  
         return tk;
     }
-
-    // Se nao estiver em um estado final, retorna um erro lexico
-    tk = create_token(buffer, "<ERRO_LEXICO>", line);  
+    // A unica forma de chegar aqui e se o estado atual for de comentario q6
+    // Se nao estiver em um estado final, retorna um erro de comentario nao terminado
+    tk = create_token(buffer, "<ERRO_COMENTARIO_NAO_TERMINADO>", line);  
     free(buffer);  
     return tk;
 }

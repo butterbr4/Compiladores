@@ -23,7 +23,7 @@
 <operador_unario> ::= - | + | λ
 <termo> ::= <fator> <mais_fatores>
 <mais_termos> ::= - <termo> <mais_termos> | + <termo> <mais_termos> | λ
-<fator> ::= ident | numero | ( <expressão> )
+<fator> ::= ident | numero | ( <expressao> )
 <mais_fatores> ::= * <fator> <mais_fatores> | / <fator> <mais_fatores> | λ
 <condicao> ::= ODD <expressao>
 | <expressao> <relacional> <expressao>
@@ -36,7 +36,7 @@ Além disso:
 * só há números inteiros, formados por um ou mais dígitos (entre 0 e 9)
 
 ### 2. **Mudanças do Léxico**
-Mudou-se algumas coisas do analisador léxico dentre elas foi feito uma otimizacao deixando a tabela de transicao estatica o que melhorou consideravelmente a performance, além de adicionar a linha do token. É importante citar que o léxico nao retorna um token `NULL` como forma de marcar o fim do programa, agora ele retorna um token com os campos `cadeia = NULL`, `tipo = final`, `line` contendo a linha final do programa.
+Mudou-se algumas coisas do analisador léxico dentre elas foi feito uma otimizacao deixando a tabela de transicao estatica o que melhorou consideravelmente a performance, além de adicionar a linha do token. É importante citar que o léxico nao retorna um token `NULL` como forma de marcar o fim do programa, agora ele retorna um token com os campos `cadeia = ""`, `tipo = final`, `line = line` contendo a linha final do programa.
 
 ### 3. **Esquema da Gramática**
 ```mermaid
@@ -72,7 +72,7 @@ Mudou-se algumas coisas do analisador léxico dentre elas foi feito uma otimizac
     subgraph mais_const
         direction LR
         virgula((,)) --> ident2((ident)) --> igual2((=)) --> numero2((numero)) --> mais_const2[mais_const] 
-        lambda(("λ"))
+        lambda1(("λ"))
     end
 ```
 ```mermaid
@@ -104,9 +104,9 @@ Mudou-se algumas coisas do analisador léxico dentre elas foi feito uma otimizac
 
     subgraph comando
         direction LR
-        ident6((ident)) --> expressao
+        ident6((ident)) --> dois_pontos((:=)) --> expressao
         call((CALL)) --> ident7((ident))
-        begin((BEGIN)) --> comando2[comando] --> mais_cmd --> fim(END)
+        begin((BEGIN)) --> comando2[comando] --> mais_cmd --> fim((END))
         se((IF)) --> condicao --> entao((THEN)) --> comando3[comando]
         enquanto((WHILE)) --> condicao2[condicao] --> faca((DO)) --> comando4[comando]
         lambda5(("λ"))
@@ -187,26 +187,26 @@ Mudou-se algumas coisas do analisador léxico dentre elas foi feito uma otimizac
 
 ### 4. **Tabela Primeiro e Seguidor da Gramatica**
 
-| Não-Terminal   | First                                   | Follow                        |
-|----------------|-----------------------------------------|-------------------------------|
-| programa       | { CONST, VAR, PROCEDURE, ident, CALL, ; } | { $ }                         |
-| bloco          | { CONST, VAR, PROCEDURE, ident, CALL, ; } | { ., ; }                      |
-| declaracao     | { CONST, VAR, PROCEDURE, λ }            | { ident, CALL, BEGIN, IF, WHILE }|
-| constante      | { CONST, λ }                            | { VAR, PROCEDURE, ident, CALL, BEGIN, IF, WHILE } |
-| variavel       | { VAR, λ }                              | { PROCEDURE, ident, CALL, BEGIN, IF, WHILE } |
-| procedimento   | { PROCEDURE, λ }                        | { ident, CALL, BEGIN, IF, WHILE }|
-| comando        | { ident, CALL, BEGIN, IF, WHILE, λ }    | { END, ; }                    |
-| mais_cmd       | { ;, λ }                                | { END }                       |
-| expressao      | { -, +, ident, number, ( }              | { ), ;, END, =, <>, <, <=, >, >= }|
-| operador_unario| { -, +, λ }                             | { ident, number, ( }          |
-| termo          | { ident, number, ( }                    | { -, +, ), ;, END, =, <>, <, <=, >, >= } |
-| mais_termos    | { -, +, λ }                             | { ), ;, END, =, <>, <, <=, >, >= }|
-| fator          | { ident, number, ( }                    | { *, /, -, +, ), ;, END, =, <>, <, <=, >, >= } |
-| mais_fatores   | { *, /, λ }                             | { -, +, ), ;, END, =, <>, <, <=, >, >= } |
-| condicao       | { ODD, -, +, ident, number, ( }         | { THEN, DO }                  |
-| relacional     | { =, <>, <, <=, >, >= }                 | { ident, number, ( }          |
-
-
+| Não-Terminal    | Primeiro                                                    | Seguidor                                                          |
+| --------------- | ----------------------------------------------------------- | ----------------------------------------------------------------- |
+| programa        | {CONST, VAR, PROCEDURE, ident, CALL, BEGIN, IF, WHILE, "."} | {λ}                                                               |
+| bloco           | {CONST, VAR, PROCEDURE, ident, CALL, BEGIN, IF, WHILE, λ}   | {".", ";"}                                                        |
+| declaracao      | {CONST, VAR, PROCEDURE, λ}                                  | {ident, CALL, BEGIN, IF, WHILE, ".", ";"}                         |
+| constante       | {CONST, λ}                                                  | {VAR, PROCEDURE, ident, CALL, BEGIN, IF, WHILE, ".", ";"}         |
+| mais_const      | {",", λ}                                                    | {";"}                                                             |
+| variavel        | {VAR, λ}                                                    | {PROCEDURE, ident, CALL, BEGIN, IF, WHILE, ".", ";"}               |
+| mais_var        | {",", λ}                                                    | {";"}                                                             |
+| procedimento    | {PROCEDURE, λ}                                              | {ident, CALL, BEGIN, IF, WHILE, ".", ";"}                         |
+| comando         | {ident, CALL, BEGIN, IF, WHILE, λ}                          | {".", ";", END}                                                   |
+| mais_cmd        | {";", λ}                                                    | {END}                                                             |
+| expressao       | {-, +, ident, numero, "("}                                  | {".", ";", END, THEN, DO, =, <>, <, <=, >, >=, ")"}               |
+| condicao        | {ODD, -, +, ident, numero, "(")}                            | {THEN, DO}                                                        |
+| operador_unario | {-, +, λ}                                                   | {ident, numero, "("}                                              |
+| termo           | {ident, numero, "("}                                        | {-, +, ".", ";", END, THEN, DO, =, <>, <, <=, >, >=, ")"}         |
+| mais_termos     | {-, +, λ}                                                   | {".", ";", END, THEN, DO, =, <>, <, <=, >, >=, ")"}               |
+| fator           | {ident, numero, "("}                                        | {*, "/", -, +, ".", ";", END, THEN, DO, =, <>, <, <=, >, >=, ")"} |
+| mais_fatores    | {*, "/", λ}                                                 | {-, +, ".", ";", END, THEN, DO, =, <>, <, <=, >, >=, ")"}         |
+| relacional      | {=, <>, <, <=, >, >=}                                       | {-, +, ident, numero, "("}                                        |
 
 ## **Rodando e Compilando o programa**
 ### 1. **Requisitos de sistema**

@@ -94,3 +94,17 @@ char *transition_table[][3] = { // estado atual,  simbolo,  proximo estado
         
     {NULL, NULL, NULL}  
 };
+
+char *folower_table[][3] = { // Nao terminal,  seguidor,  seguidor
+    // Seguidores de variavel
+    {"variavel", "PROCEDURE", "PROCEDURE"},
+    {"variavel", "id", "id"},
+    {"variavel", "CALL", "CALL"},
+    {"variavel", "BEGIN", "BEGIN"},
+    {"variavel", "IF", "IF"},
+    {"variavel", "WHILE", "WHILE"},
+    {"variavel", "ponto", "ponto"},
+    {"variavel", "ponto_virgula", "ponto_virgula"},
+
+    {NULL, NULL, NULL}
+};

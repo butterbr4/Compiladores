@@ -1,3 +1,6 @@
-Erro sintático na linha 1: ponto final esperado
+Erro sintático na linha 1: identificador esperado
+Erro sintático na linha 1: token inesperado
+Erro sintático na linha 1: dois pontos e igual esperado
+Erro sintático na linha 2: final inesperado
 
 Cada erro é uma chance de aprender. Não desista!

@@ -18,7 +18,15 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
-    if(sintatico(file_in)){  // Se nao houver erros sintaticos na compilacao
+    // Abre o arquivo de saida
+    FILE *file_out = fopen("saida.txt", "w");
+
+    if (file_out == NULL) {
+        printf("Failed to open file\n");
+        return 0;
+    }
+
+    if(sintatico(file_in, file_out)){  // Se nao houver erros sintaticos na compilacao
         fprintf(file_out, "Compilação realizada com sucesso, parece que você se tornou um mestre da programação!\n");
     } else {
         fprintf(file_out, "\nCada erro é uma chance de aprender. Não desista!\n");
