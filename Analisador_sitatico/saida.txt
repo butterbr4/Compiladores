@@ -1,6 +1,7 @@
-Erro sintático na linha 1: identificador esperado
-Erro sintático na linha 1: token inesperado
-Erro sintático na linha 1: dois pontos e igual esperado
-Erro sintático na linha 2: final inesperado
+Erro sintático na linha 2: ponto e virgula esperado
+Erro sintático na linha 5: THEN esperado
+Erro sintático na linha 5: END esperado
+Erro léxico na linha 6: @
+Erro sintático na linha 7: final inesperado
 
 Cada erro é uma chance de aprender. Não desista!
