@@ -345,14 +345,17 @@ void mais_const(){
                     next_tk();
                     mais_const();  // Recursao
                 } else {
+                    erros++;
                     fprintf(file_out, "Erro sintático na linha %d: numero esperado\n", token->line);
                     return;
                 }
             } else {
+                erros++;
                 fprintf(file_out, "Erro sintático na linha %d: sinal de igual esperado\n", token->line);
                 return;
             }
         } else {
+            erros++;
             fprintf(file_out, "Erro sintático na linha %d: identificador esperado\n", token->line);
             return;
         }
@@ -367,6 +370,7 @@ void mais_var(){
             next_tk();
             mais_var();  // Recursao
         } else {
+            erros++;
             fprintf(file_out, "Erro sintático na linha %d: identificador esperado\n", token->line);
         }
     }
@@ -403,10 +407,12 @@ void fator(){
             next_tk();
             return;
         }else{
+            erros++;
             fprintf(file_out, "Erro sintático na linha %d: fecha parenteses esperado\n", token->line);
             return;
         }
     }else{
+        erros++;
         fprintf(file_out, "Erro sintático na linha %d: identificador, número ou abre parenteses esperado\n", token->line);
         return;
     }

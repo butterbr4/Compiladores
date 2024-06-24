@@ -5,14 +5,14 @@
 
 int main(int argc, char **argv) {
 
-    // Verifica se a quantidade de argumentos passados é correta
-    // if ( argc  != 2){
-    //     printf("Quantidade de argumentos errada. Use ""make run ARGS=seu_arquivo.txt"" \n");
-    //     exit(-1);
-    // }
+    //Verifica se a quantidade de argumentos passados é correta
+    if ( argc  != 2){
+        printf("Quantidade de argumentos errada. Use ""make run ARGS=seu_arquivo.txt"" \n");
+        exit(-1);
+    }
 
     // Abre o arquivo de entrada
-    FILE *file_in = fopen("teste.txt", "r");
+    FILE *file_in = fopen(argv[1], "r");
     if (file_in == NULL) {
         printf("Failed to open file\n");
         exit(-1);
