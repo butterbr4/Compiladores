@@ -96,6 +96,17 @@ char *transition_table[][3] = { // estado atual,  simbolo,  proximo estado
 };
 
 char *folower_table[][3] = { // Nao terminal,  seguidor,  seguidor
+    // Seguidores de constante
+    {"constante", "PROCEDURE", "PROCEDURE"},
+    {"constante", "id", "id"},
+    {"constante", "CALL", "CALL"},
+    {"constante", "BEGIN", "BEGIN"},
+    {"constante", "IF", "IF"},
+    {"constante", "WHILE", "WHILE"},
+    {"constante", "ponto", "ponto"},
+    {"constante", "ponto_virgula", "ponto_virgula"},
+    {"constante", "VAR", "VAR"},
+
     // Seguidores de variavel
     {"variavel", "PROCEDURE", "PROCEDURE"},
     {"variavel", "id", "id"},
@@ -105,6 +116,22 @@ char *folower_table[][3] = { // Nao terminal,  seguidor,  seguidor
     {"variavel", "WHILE", "WHILE"},
     {"variavel", "ponto", "ponto"},
     {"variavel", "ponto_virgula", "ponto_virgula"},
+
+    // Seguidores de procedimento
+    {"procedimento", "id", "id"},
+    {"procedimento", "CALL", "CALL"},
+    {"procedimento", "BEGIN", "BEGIN"},
+    {"procedimento", "IF", "IF"},
+    {"procedimento", "WHILE", "WHILE"},
+    {"procedimento", "ponto", "ponto"},
+    {"procedimento", "ponto_virgula", "ponto_virgula"},
+
+    // Seguidores de comando
+    {"comando", "END", "END"},
+    {"comando", "ponto", "ponto"},
+    //{"comando", "ponto_virgula", "ponto_virgula"},
+
+    // Seguidores de fator
 
     {NULL, NULL, NULL}
 };

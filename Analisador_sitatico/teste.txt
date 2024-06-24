@@ -1,4 +1,4 @@
-VAR a,b,c
+VAR a,b,a,c
 BEGIN
   a:=2;
   IF a>2

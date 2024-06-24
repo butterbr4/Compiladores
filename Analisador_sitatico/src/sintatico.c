@@ -45,13 +45,9 @@ void next_tk(){
 
 // Funcao panico que sicroniza o token
 int panic(const char *n_terminal, const char *sinc){       
-    printf("token->cadeia: %s\n", token->cadeia);
-    printf("n_terminal: %s\n", n_terminal);
-    printf("sinc: %s\n", sinc);
     // Enquanto nao encontrar um simbolo de sicronizacao ou o final do arquivo pega o proximo token
     while(((find(table, n_terminal, token->tipo)) == NULL) || (is_tk_type("final"))){ 
         next_tk();  // Pega o proximo token
-        printf("token->cadeia: %s\n", token->cadeia);
         if(is_tk_type(sinc)){  // Se encontrar o simbolo de sincronizacao passado
             return 1;  // Retorna 1
         }
@@ -67,7 +63,6 @@ void programa(){
     next_tk();  // Pega o proximo token
 
     bloco();  // Chama bloco
-    printf("token cadeia: %s\n", token->cadeia);
     while(!(is_tk_type("ponto") || (is_tk_type("final")))){
         next_tk();  // Pega o proximo token
         // Se encontrar o final do programa o "." significa que ouve um final inesperado do bloco()
@@ -120,6 +115,14 @@ void constante(){
                     if(is_tk_type("ponto_virgula")){
                         return;
                     } else {
+                        erros++;
+                        if(panic("constante", "ponto_virgula")){
+                            // Se encontrar um ponto e virgula como simbolo de sincronizacao significa que ouve um token inesperado
+                            fprintf(file_out, "Erro sintático na linha %d: token inesperado\n", token->line);
+                            // Esse ponto e virgula encontrado pode ser o final da regra portanto escolheu-se pegar o proximo token
+                            next_tk();
+                            return;
+                        }
                         fprintf(file_out, "Erro sintático na linha %d: ponto e vírgula esperado\n", token->line);
                         return;
                     }
@@ -161,7 +164,7 @@ void variavel(){
                 if(panic("variavel", "ponto_virgula")){
                     // Se encontrar um ponto e virgula como simbolo de sincronizacao significa que ouve um token inesperado
                     fprintf(file_out, "Erro sintático na linha %d: token inesperado\n", token->line);
-                    // Esse ponto e virgula encontrado pode ser o final de variavel portanto escolheu-se pegar o proximo token
+                    // Esse ponto e virgula encontrado pode ser o final da regra portanto escolheu-se pegar o proximo token
                     next_tk();
                     return;
                 }
@@ -195,18 +198,37 @@ void procedimento(){
                     procedimento();  // Recursao
                     return;
                 } else {
+                    erros++;
+                    if(panic("procedimento", "ponto_virgula")){
+                        // Se encontrar um identificador como simbolo de sincronizacao significa que ouve um token inesperado
+                        fprintf(file_out, "Erro sintático na linha %d: token inesperado\n", token->line);
+                        // Esse ponto e virgula encontrado pode ser o final da regra portanto escolheu-se pegar o proximo token
+                        next_tk();
+                        return;
+                    }
                     fprintf(file_out, "Erro sintático na linha %d: ponto e vírgula esperado\n", token->line);
                     return;
                 }
             } else {
+                erros++;
+                if(panic("procedimento", "ponto_virgula")){
+                    // Se encontrar um identificador como simbolo de sincronizacao significa que ouve um token inesperado
+                    fprintf(file_out, "Erro sintático na linha %d: token inesperado\n", token->line);
+                    return;
+                }
                 fprintf(file_out, "Erro sintático na linha %d: ponto e vírgula esperado\n", token->line);
                 return;
             }
         } else {
+            erros++;
+            if(panic("procedimento", "id")){
+                // Se encontrar um identificador como simbolo de sincronizacao significa que ouve um token inesperado
+                fprintf(file_out, "Erro sintático na linha %d: token inesperado\n", token->line);
+                return;
+            }
             fprintf(file_out, "Erro sintático na linha %d: identificador esperado\n", token->line);
             return;
         }
-        return;
     }
     return;
 }
@@ -219,6 +241,8 @@ void comando(){
             expressao();
             return;
         }else{
+            erros++;
+            panic("comando","");
             fprintf(file_out, "Erro sintático na linha %d: dois pontos e igual esperado\n", token->line);
             return;
         }
@@ -229,6 +253,8 @@ void comando(){
             next_tk();
             return;
         } else {
+            erros++;
+            panic("comando","");
             fprintf(file_out, "Erro sintático na linha %d: identificador esperado\n", token->line);
             return;
         }
@@ -241,6 +267,8 @@ void comando(){
             comando();  // Recursao
             return;
         } else {
+            erros++;
+            panic("comando","");
             fprintf(file_out, "Erro sintático na linha %d: ""THEN"" esperado\n", token->line);
             return;
         }
@@ -253,6 +281,8 @@ void comando(){
             comando();  // Recursao
             return;
         } else {
+            erros++;
+            panic("comando", "");
             fprintf(file_out, "Erro sintático na linha %d: ""DO"" esperado\n", token->line);
             return;
         }
@@ -265,6 +295,14 @@ void comando(){
             next_tk();
             return;
         } else {
+            erros++;
+            if(panic("comando", "END")){
+                        // Se encontrar um identificador como simbolo de sincronizacao significa que ouve um token inesperado
+                        fprintf(file_out, "Erro sintático na linha %d: token inesperado\n", token->line);
+                        // Esse END encontrado pode ser o final da regra portanto escolheu-se pegar o proximo token
+                        next_tk();
+                        return;
+                    }
             fprintf(file_out, "Erro sintático na linha %d: ""END"" esperado\n", token->line);
             return;
         }
